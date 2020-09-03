@@ -33,14 +33,15 @@ struct Article: Codable {
 }
 
 // Can`t mix with source
-enum Category {
-    case business
-    case entertainment
-    case general
-    case health
-    case science
-    case sports
-    case technology
+enum Category: String, CaseIterable {
+    case allCategories = "All categories"
+    case business = "Business"
+    case entertainment = "Enteratainment"
+    case general = "General"
+    case health = "Health"
+    case science = "Science"
+    case sports = "Sports"
+    case technology = "Technology"
 }
 
 

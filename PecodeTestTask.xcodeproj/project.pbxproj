@@ -150,8 +150,8 @@
 		5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */,
 				5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */,
+				5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */,
 			);
 			path = TextFieldAndButtonTableViewCell;
 			sourceTree = "<group>";

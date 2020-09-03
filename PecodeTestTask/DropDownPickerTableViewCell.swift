@@ -1,9 +1,8 @@
 //
 //  DropDownPickerTableViewCell.swift
-//  kpiRozklad
+//  PecodeTestTask
 //
-//  Created by Денис Данилюк on 17.07.2020.
-//  Copyright © 2020 Denis Danilyuk. All rights reserved.
+//  Created by Денис Данилюк on 03.09.2020.
 //
 
 import UIKit
@@ -36,7 +35,10 @@ class DropDownPickerTableViewCell: UITableViewCell {
             }
             
             selectedRow = previousSelectedIndex
-            pickerView.selectRow(previousSelectedIndex, inComponent: 0, animated: false)
+            DispatchQueue.main.async {
+                self.pickerView.selectRow(self.previousSelectedIndex, inComponent: 0, animated: true)
+            }
+        
             pickerView.reloadAllComponents()
         }
     }
@@ -83,11 +85,9 @@ extension DropDownPickerTableViewCell: UIPickerViewDelegate, UIPickerViewDataSou
         
         let isRowSelected = selectedRow == row
 
-        var textColor = isRowSelected ? UIColor.blue : UIColor.black
+        let textColor = isRowSelected ? UIColor.systemRed : UIColor.label
 
-        if #available(iOS 13.0, *) {
-            textColor = isRowSelected ? UIColor.link : UIColor.label
-        }
+
         
         let attributtedString = NSAttributedString(string: dataArray[row], attributes: [
             NSAttributedString.Key.foregroundColor: textColor,

@@ -22,25 +22,34 @@ class FilterViewController: UIViewController {
     var isCategoryListOpen: Bool = false
     
     var isSourceListOpen: Bool = false
+    
+    var countrySelected: Country = .ua
+    
+    var categorySelected: Category = .allCategories
 
     let headersOfSections: [Int: String] = [
-        0: "Choose counry you want",
-        1: "Choose category",
-        2: "Choose source information",
+        0: "You can`t mix country with source",
+        1: "You can`t mix category with source"
+//        2: "Choose source information",
     ]
     
     let placeholdersOfSections: [Int: String] = [
-        0: "Counry",
+        0: "Country",
         1: "Category",
         2: "Source",
     ]
     
-    var selectedRowInPickers: [Int: Int] = [:]
+    var selectedRowInPickers: [Int: Int] = [ :
+//        0 : 2,
+//        1 : 3
+    ]
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        
+        selectedRowInPickers[0] = Int(Country.allCases.firstIndex { $0 == .ua } ?? 0)
     }
     
     private func setupTableView() {
@@ -94,7 +103,15 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
                 assertionFailure("Cell not created")
                 return UITableViewCell()
             }
-            newLessonCell.configureCell(text: "textCell", placeholder: placeholdersOfSections[indexPath.section])
+            var text: String?
+            if indexPath.section == 0 {
+                text = countrySelected.getFullName()
+            } else if indexPath.section == 1 {
+                text = categorySelected.rawValue
+            }
+            
+            newLessonCell.configureCell(text: text, placeholder: placeholdersOfSections[indexPath.section])
+
             newLessonCell.indexPath = IndexPath(row: 0, section: indexPath.section)
             newLessonCell.delegate = self
             newLessonCell.selectionStyle = .none
@@ -110,8 +127,19 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
             cellWithOnePicker.fatherIndexPath = IndexPath(row: 0, section: indexPath.section)
             
             //
-            cellWithOnePicker.dataArray = Country.allCases.map({ $0.getFullName() })
+            var dataArray: [String] = []
+            if indexPath.section == 0 {
+                dataArray = Country.allCases.map({ $0.getFullName() })
+            } else if indexPath.section == 1 {
+                
+                dataArray = Category.allCases.map({ $0.rawValue })
+//                dataArray.insert("All categories", at: 0)
+            } else if indexPath.section == 2 {
+                dataArray = ["BBC", "Ria", "Google"]
+            }
+//            dataArray.insert("Default", at: 0)
             
+            cellWithOnePicker.dataArray = dataArray
             cellWithOnePicker.delegate = self
             cellWithOnePicker.previousSelectedIndex = selectedRowInPickers[indexPath.section] ?? 0
             cellWithOnePicker.selectionStyle = .none

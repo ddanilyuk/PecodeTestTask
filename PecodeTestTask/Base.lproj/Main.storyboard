@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -92,8 +93,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Filter" largeTitleDisplayMode="never" id="oVb-2L-qXM">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="kWs-ZO-oHG"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="EVa-9M-yeS"/>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="kWs-ZO-oHG">
+                            <color key="tintColor" name="AccentColor"/>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="EVa-9M-yeS">
+                            <color key="tintColor" name="AccentColor"/>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Rxy-Qg-782" id="Cgj-AP-vGh"/>
@@ -162,6 +167,9 @@
     </scenes>
     <resources>
         <image name="filter" width="27" height="26"/>
+        <namedColor name="AccentColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

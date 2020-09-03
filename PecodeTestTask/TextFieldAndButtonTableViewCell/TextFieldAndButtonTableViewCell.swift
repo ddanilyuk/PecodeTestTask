@@ -1,9 +1,8 @@
 //
 //  NewLessonTalbleViewCellWithTextField.swift
-//  kpiRozklad
+//  PecodeTestTask
 //
-//  Created by Денис Данилюк on 17.07.2020.
-//  Copyright © 2020 Denis Danilyuk. All rights reserved.
+//  Created by Денис Данилюк on 03.09.2020.
 //
 
 import UIKit
