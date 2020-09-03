@@ -18,6 +18,8 @@
 		5F0AB56E25016FCC0086208E /* ArticleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB56C25016FCC0086208E /* ArticleTableViewCell.xib */; };
 		5F0AB571250171AC0086208E /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB570250171AC0086208E /* UIView+Extensions.swift */; };
 		5F0AB575250172160086208E /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB574250172160086208E /* Article.swift */; };
+		5F0AB5772501813D0086208E /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB5762501813D0086208E /* FilterViewController.swift */; };
+		5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB578250181820086208E /* UIViewController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		5F0AB56C25016FCC0086208E /* ArticleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleTableViewCell.xib; sourceTree = "<group>"; };
 		5F0AB570250171AC0086208E /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		5F0AB574250172160086208E /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		5F0AB5762501813D0086208E /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		5F0AB578250181820086208E /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 				5F0AB572250171C40086208E /* App */,
 				5F0AB559250163A70086208E /* Main.storyboard */,
 				5F0AB557250163A70086208E /* MainViewController.swift */,
+				5F0AB5762501813D0086208E /* FilterViewController.swift */,
 				5F0AB573250171FA0086208E /* Models */,
 				5F0AB56A25016FAB0086208E /* ArticleTableViewCell */,
 				5F0AB56925016B7D0086208E /* Networking */,
@@ -101,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				5F0AB570250171AC0086208E /* UIView+Extensions.swift */,
+				5F0AB578250181820086208E /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -195,7 +201,9 @@
 			files = (
 				5F0AB575250172160086208E /* Article.swift in Sources */,
 				5F0AB571250171AC0086208E /* UIView+Extensions.swift in Sources */,
+				5F0AB5772501813D0086208E /* FilterViewController.swift in Sources */,
 				5F0AB558250163A70086208E /* MainViewController.swift in Sources */,
+				5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */,
 				5F0AB554250163A70086208E /* AppDelegate.swift in Sources */,
 				5F0AB56D25016FCC0086208E /* ArticleTableViewCell.swift in Sources */,
 				5F0AB5682501640D0086208E /* NetworkingAPI.swift in Sources */,

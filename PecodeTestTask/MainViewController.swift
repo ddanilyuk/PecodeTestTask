@@ -10,6 +10,7 @@ import UIKit
 class MainViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var filterButton: UIButton!
     
     var news: [Article] = []
     
@@ -30,6 +31,8 @@ class MainViewController: UIViewController {
             }
         }
         
+        
+        
     }
 
     
@@ -39,7 +42,15 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
-
+    
+    
+    @IBAction func didPressFilterButton(_ sender: UIButton) {
+        guard let filterViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: FilterViewController.identifier) as? FilterViewController else {
+            return
+        }
+        self.present(filterViewController, animated: true, completion: nil)
+    }
+    
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
@@ -55,11 +66,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ArticleTableViewCell.identifier, for: indexPath) as? ArticleTableViewCell else { return UITableViewCell() }
+        
         let article = news[indexPath.row]
         
         cell.articleNameLabel.text = article.title
         cell.articleDescriptionLabel.text = article.description
+        
+        if let urlToImage = article.urlToImage {
+            cell.articleImageURL = URL(string: urlToImage)
+        }
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
