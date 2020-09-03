@@ -12,6 +12,7 @@ class ArticleTableViewCell: UITableViewCell {
     @IBOutlet weak var articleImageView: UIImageView!
     @IBOutlet weak var articleNameLabel: UILabel!
     @IBOutlet weak var articleDescriptionLabel: UILabel!
+    @IBOutlet weak var articleAuthorAndSourceLabel: UILabel!
     @IBOutlet weak var articleImageActivityIndicator: UIActivityIndicatorView!
     
     var articleImageURL: URL? {

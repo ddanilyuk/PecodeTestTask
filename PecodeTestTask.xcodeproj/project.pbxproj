@@ -20,6 +20,10 @@
 		5F0AB575250172160086208E /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB574250172160086208E /* Article.swift */; };
 		5F0AB5772501813D0086208E /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB5762501813D0086208E /* FilterViewController.swift */; };
 		5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB578250181820086208E /* UIViewController+Extensions.swift */; };
+		5F0AB584250191980086208E /* DropDownPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB57A250191970086208E /* DropDownPickerTableViewCell.swift */; };
+		5F0AB588250191980086208E /* TextFieldAndButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */; };
+		5F0AB589250191980086208E /* TextFieldAndButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */; };
+		5F0AB58A250191980086208E /* DropDownPickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		5F0AB574250172160086208E /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		5F0AB5762501813D0086208E /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		5F0AB578250181820086208E /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		5F0AB57A250191970086208E /* DropDownPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DropDownPickerTableViewCell.swift; path = PecodeTestTask/DropDownPickerTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldAndButtonTableViewCell.xib; sourceTree = "<group>"; };
+		5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldAndButtonTableViewCell.swift; sourceTree = "<group>"; };
+		5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DropDownPickerTableViewCell.xib; path = PecodeTestTask/DropDownPickerTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +85,8 @@
 				5F0AB573250171FA0086208E /* Models */,
 				5F0AB56A25016FAB0086208E /* ArticleTableViewCell */,
 				5F0AB56925016B7D0086208E /* Networking */,
+				5F0AB57B250191970086208E /* DropDownPickerTableViewCell */,
+				5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */,
 				5F0AB56F250171890086208E /* Extensions */,
 				5F0AB55C250163A80086208E /* Assets.xcassets */,
 				5F0AB55E250163A80086208E /* LaunchScreen.storyboard */,
@@ -126,6 +136,24 @@
 				5F0AB574250172160086208E /* Article.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		5F0AB57B250191970086208E /* DropDownPickerTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5F0AB57A250191970086208E /* DropDownPickerTableViewCell.swift */,
+				5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */,
+			);
+			path = DropDownPickerTableViewCell;
+			sourceTree = "<group>";
+		};
+		5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */,
+				5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */,
+			);
+			path = TextFieldAndButtonTableViewCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,8 +214,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F0AB560250163A80086208E /* LaunchScreen.storyboard in Resources */,
+				5F0AB588250191980086208E /* TextFieldAndButtonTableViewCell.xib in Resources */,
 				5F0AB55D250163A80086208E /* Assets.xcassets in Resources */,
 				5F0AB56E25016FCC0086208E /* ArticleTableViewCell.xib in Resources */,
+				5F0AB58A250191980086208E /* DropDownPickerTableViewCell.xib in Resources */,
 				5F0AB55B250163A70086208E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,8 +233,10 @@
 				5F0AB571250171AC0086208E /* UIView+Extensions.swift in Sources */,
 				5F0AB5772501813D0086208E /* FilterViewController.swift in Sources */,
 				5F0AB558250163A70086208E /* MainViewController.swift in Sources */,
+				5F0AB584250191980086208E /* DropDownPickerTableViewCell.swift in Sources */,
 				5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */,
 				5F0AB554250163A70086208E /* AppDelegate.swift in Sources */,
+				5F0AB589250191980086208E /* TextFieldAndButtonTableViewCell.swift in Sources */,
 				5F0AB56D25016FCC0086208E /* ArticleTableViewCell.swift in Sources */,
 				5F0AB5682501640D0086208E /* NetworkingAPI.swift in Sources */,
 				5F0AB556250163A70086208E /* SceneDelegate.swift in Sources */,

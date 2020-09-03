@@ -16,10 +16,15 @@ class MainViewController: UIViewController {
     
     let api = NetworkingAPI()
     
+    /// Searching
+    var isSearching = false
+    let search = UISearchController(searchResultsController: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView()
+        setupSearch()
         
         api.getNews(querie: nil, sources: nil, country: nil, category: nil) { [weak self] data  in
             let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
@@ -30,9 +35,6 @@ class MainViewController: UIViewController {
                 }
             }
         }
-        
-        
-        
     }
 
     
@@ -43,20 +45,48 @@ class MainViewController: UIViewController {
         tableView.dataSource = self
     }
     
+    private func setupSearch() {
+        /// Search bar settings
+        search.searchResultsUpdater = self
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Search news"
+        search.searchBar.tintColor = .systemRed
+
+        self.navigationItem.searchController = search
+        self.navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+    }
+    
     
     @IBAction func didPressFilterButton(_ sender: UIButton) {
         guard let filterViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: FilterViewController.identifier) as? FilterViewController else {
             return
         }
-        self.present(filterViewController, animated: true, completion: nil)
+//        self.present(filterViewController, animated: true, completion: nil)
+        
+//        guard let newLessonViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: NewLessonViewController.identifier) as? NewLessonViewController  else { return }
+//        newLessonViewController.delegate = self
+
+        let navigationController = UINavigationController()
+        
+        navigationController.viewControllers = [filterViewController]
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.barTintColor = UIColor.systemGroupedBackground
+        
+        if #available(iOS 13, *) {
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            self.navigationController?.pushViewController(filterViewController, animated: true)
+        }
     }
     
 }
 
+
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 125
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +101,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.articleNameLabel.text = article.title
         cell.articleDescriptionLabel.text = article.description
+        cell.articleAuthorAndSourceLabel.text = "\(article.source.name ?? "No source") | \(article.author ?? "No author")"
         
         if let urlToImage = article.urlToImage {
             cell.articleImageURL = URL(string: urlToImage)
@@ -83,4 +114,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+}
+
+
+extension MainViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        print(searchText)
+    }
 }
