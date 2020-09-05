@@ -24,6 +24,8 @@
 		5F0AB588250191980086208E /* TextFieldAndButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */; };
 		5F0AB589250191980086208E /* TextFieldAndButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */; };
 		5F0AB58A250191980086208E /* DropDownPickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */; };
+		5F2FB03D2503B60100570D27 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB03C2503B60100570D27 /* Settings.swift */; };
+		5F2FB03F2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB03E2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldAndButtonTableViewCell.xib; sourceTree = "<group>"; };
 		5F0AB581250191980086208E /* TextFieldAndButtonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldAndButtonTableViewCell.swift; sourceTree = "<group>"; };
 		5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DropDownPickerTableViewCell.xib; path = PecodeTestTask/DropDownPickerTableViewCell.xib; sourceTree = SOURCE_ROOT; };
+		5F2FB03C2503B60100570D27 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		5F2FB03E2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicator+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,13 +84,11 @@
 			children = (
 				5F0AB572250171C40086208E /* App */,
 				5F0AB559250163A70086208E /* Main.storyboard */,
-				5F0AB557250163A70086208E /* MainViewController.swift */,
-				5F0AB5762501813D0086208E /* FilterViewController.swift */,
+				5FBC05C42503AE0D001278F1 /* ViewControllers */,
 				5F0AB573250171FA0086208E /* Models */,
-				5F0AB56A25016FAB0086208E /* ArticleTableViewCell */,
+				5FBC05C52503AE2A001278F1 /* Views */,
 				5F0AB56925016B7D0086208E /* Networking */,
-				5F0AB57B250191970086208E /* DropDownPickerTableViewCell */,
-				5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */,
+				5F2FB03C2503B60100570D27 /* Settings.swift */,
 				5F0AB56F250171890086208E /* Extensions */,
 				5F0AB55C250163A80086208E /* Assets.xcassets */,
 				5F0AB55E250163A80086208E /* LaunchScreen.storyboard */,
@@ -117,6 +119,7 @@
 			children = (
 				5F0AB570250171AC0086208E /* UIView+Extensions.swift */,
 				5F0AB578250181820086208E /* UIViewController+Extensions.swift */,
+				5F2FB03E2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -154,6 +157,25 @@
 				5F0AB580250191980086208E /* TextFieldAndButtonTableViewCell.xib */,
 			);
 			path = TextFieldAndButtonTableViewCell;
+			sourceTree = "<group>";
+		};
+		5FBC05C42503AE0D001278F1 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5F0AB557250163A70086208E /* MainViewController.swift */,
+				5F0AB5762501813D0086208E /* FilterViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5FBC05C52503AE2A001278F1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5F0AB56A25016FAB0086208E /* ArticleTableViewCell */,
+				5F0AB57B250191970086208E /* DropDownPickerTableViewCell */,
+				5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,8 +255,10 @@
 				5F0AB571250171AC0086208E /* UIView+Extensions.swift in Sources */,
 				5F0AB5772501813D0086208E /* FilterViewController.swift in Sources */,
 				5F0AB558250163A70086208E /* MainViewController.swift in Sources */,
+				5F2FB03F2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift in Sources */,
 				5F0AB584250191980086208E /* DropDownPickerTableViewCell.swift in Sources */,
 				5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */,
+				5F2FB03D2503B60100570D27 /* Settings.swift in Sources */,
 				5F0AB554250163A70086208E /* AppDelegate.swift in Sources */,
 				5F0AB589250191980086208E /* TextFieldAndButtonTableViewCell.swift in Sources */,
 				5F0AB56D25016FCC0086208E /* ArticleTableViewCell.swift in Sources */,

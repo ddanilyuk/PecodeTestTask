@@ -7,6 +7,10 @@
 
 import UIKit
 
+
+let imageCache = NSCache<NSString, UIImage>()
+
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

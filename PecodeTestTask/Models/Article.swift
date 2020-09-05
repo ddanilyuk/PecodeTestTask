@@ -10,19 +10,30 @@ import Foundation
 
 struct ServerResponse: Codable {
     var status: String
+    
+    /// Server show invalid total results.
     var totalResults: Int
     var articles: [Article]
 }
 
+struct AllSorcesResponse: Codable {
+    var status: String
+    var sources: [Source]
+}
 
-struct ArticleSource: Codable {
+struct Source: Codable {
     var id: String?
     var name: String?
+    var description: String?
+    var url: String?
+    var category: Category?
+    var language: String?
+    var country: Country?
 }
 
 
 struct Article: Codable {
-    var source: ArticleSource
+    var source: Source
     var author: String?
     var title: String
     var description: String?
@@ -32,8 +43,9 @@ struct Article: Codable {
     var content: String?
 }
 
+
 // Can`t mix with source
-enum Category: String, CaseIterable {
+enum Category: String, CaseIterable, Codable {
     case allCategories = "All categories"
     case business = "Business"
     case entertainment = "Enteratainment"
@@ -45,7 +57,7 @@ enum Category: String, CaseIterable {
 }
 
 
-enum Country: String, CaseIterable {
+enum Country: String, CaseIterable, Codable {
     case ae
     case ar
     case at

@@ -42,10 +42,6 @@
                     </label>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="GYM-ro-4wZ">
                         <rect key="frame" x="40" y="40" width="20" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="20" id="qPE-fO-fDi"/>
-                            <constraint firstAttribute="height" constant="20" id="t7e-Yd-Mvi"/>
-                        </constraints>
                     </activityIndicatorView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BBC | Denys Danyliuk" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uf4-pL-Ob2">
                         <rect key="frame" x="10" y="95" width="323" height="14.5"/>
@@ -54,17 +50,17 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="uf4-pL-Ob2" secondAttribute="trailing" constant="10" id="1PP-7w-Ftu"/>
                     <constraint firstItem="ebP-kd-wgE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="8gw-hM-e8y"/>
                     <constraint firstItem="ebP-kd-wgE" firstAttribute="leading" secondItem="9Mc-Rm-h85" secondAttribute="trailing" constant="8" symbolic="YES" id="8hm-FD-Sbc"/>
                     <constraint firstItem="9Mc-Rm-h85" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="FSg-R9-WcT"/>
-                    <constraint firstItem="GYM-ro-4wZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="KSo-5F-SWS"/>
                     <constraint firstAttribute="trailing" secondItem="ebP-kd-wgE" secondAttribute="trailing" constant="16" id="M6s-lN-1Ml"/>
-                    <constraint firstItem="GYM-ro-4wZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="40" id="Oqo-2R-C6j"/>
                     <constraint firstItem="uf4-pL-Ob2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="SaD-rm-HhZ"/>
                     <constraint firstItem="3rE-Op-XH6" firstAttribute="leading" secondItem="9Mc-Rm-h85" secondAttribute="trailing" constant="10" id="XH3-SN-wbe"/>
-                    <constraint firstAttribute="bottom" secondItem="GYM-ro-4wZ" secondAttribute="bottom" constant="60" id="bb0-Eh-AOV"/>
+                    <constraint firstItem="GYM-ro-4wZ" firstAttribute="centerX" secondItem="9Mc-Rm-h85" secondAttribute="centerX" id="Zzg-il-KBi"/>
+                    <constraint firstItem="GYM-ro-4wZ" firstAttribute="centerY" secondItem="9Mc-Rm-h85" secondAttribute="centerY" id="cKu-WP-Bp4"/>
                     <constraint firstAttribute="trailing" secondItem="3rE-Op-XH6" secondAttribute="trailing" constant="16" id="fy4-xL-Lzo"/>
                     <constraint firstItem="3rE-Op-XH6" firstAttribute="top" secondItem="ebP-kd-wgE" secondAttribute="bottom" constant="4" id="jzd-oo-KpZ"/>
                     <constraint firstItem="uf4-pL-Ob2" firstAttribute="top" secondItem="9Mc-Rm-h85" secondAttribute="bottom" constant="5" id="khL-Yg-ROi"/>
@@ -87,6 +83,9 @@
         <image name="placeholder" width="695" height="695"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

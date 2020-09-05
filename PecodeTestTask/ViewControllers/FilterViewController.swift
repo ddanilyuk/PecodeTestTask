@@ -9,7 +9,7 @@ import UIKit
 
 
 protocol FilterViewControllerDelegate {
-    func filterParametersChanged()
+    func filterParametersChanged(filter: Filter)
 }
 
 
@@ -23,14 +23,14 @@ class FilterViewController: UIViewController {
     
     var isSourceListOpen: Bool = false
     
-    var countrySelected: Country = .ua
+//    var countrySelected: Country = .ua
     
-    var categorySelected: Category = .allCategories
+//    var categorySelected: Category = .allCategories
 
     let headersOfSections: [Int: String] = [
-        0: "You can`t mix country with source",
-        1: "You can`t mix category with source"
-//        2: "Choose source information",
+        0: "Select the country for which you want to receive news",
+        1: "Select a news category",
+        2: "Select the information source \nCan`t mix with category and country"
     ]
     
     let placeholdersOfSections: [Int: String] = [
@@ -43,13 +43,22 @@ class FilterViewController: UIViewController {
 //        0 : 2,
 //        1 : 3
     ]
+    
+    var delegate: FilterViewControllerDelegate?
 
+    var settings = Settings()
+    
+    var filter = Filter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         
-        selectedRowInPickers[0] = Int(Country.allCases.firstIndex { $0 == .ua } ?? 0)
+        filter = settings.selectedFilter
+        
+        selectedRowInPickers[0] = Int(Country.allCases.firstIndex { $0 == filter.country } ?? 0)
+        selectedRowInPickers[1] = Int(Category.allCases.firstIndex { $0 == filter.category } ?? 0)
+//        selectedRowInPickers[2] = Int(Category.allCases.firstIndex { $0 == filter.category } ?? 0)
     }
     
     private func setupTableView() {
@@ -63,7 +72,22 @@ class FilterViewController: UIViewController {
         tableView.backgroundColor = UIColor.systemGroupedBackground
     }
     
-
+    @IBAction func didPressSave(_ sender: UIBarButtonItem) {
+        
+//        filter.category = categorySelected
+//        filter.country = countrySelected
+        
+        delegate?.filterParametersChanged(filter: filter)
+        
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func didPressCancel(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 
@@ -89,7 +113,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return headersOfSections[section] == nil ? 20 : 30
+        return section == 1 ? 40 : 60
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -105,9 +129,9 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
             }
             var text: String?
             if indexPath.section == 0 {
-                text = countrySelected.getFullName()
+                text = filter.country?.getFullName()
             } else if indexPath.section == 1 {
-                text = categorySelected.rawValue
+                text = filter.category?.rawValue
             }
             
             newLessonCell.configureCell(text: text, placeholder: placeholdersOfSections[indexPath.section])
@@ -131,14 +155,10 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
             if indexPath.section == 0 {
                 dataArray = Country.allCases.map({ $0.getFullName() })
             } else if indexPath.section == 1 {
-                
                 dataArray = Category.allCases.map({ $0.rawValue })
-//                dataArray.insert("All categories", at: 0)
             } else if indexPath.section == 2 {
                 dataArray = ["BBC", "Ria", "Google"]
-            }
-//            dataArray.insert("Default", at: 0)
-            
+            }            
             cellWithOnePicker.dataArray = dataArray
             cellWithOnePicker.delegate = self
             cellWithOnePicker.previousSelectedIndex = selectedRowInPickers[indexPath.section] ?? 0
@@ -193,6 +213,17 @@ extension FilterViewController: DropDownPickerTableViewCellDelegate {
         }
         userChangeTextInTextField(at: fatherIndexPath, text: text)
         selectedRowInPickers[fatherIndexPath.section] = inPickerRow
+        
+        
+        if fatherIndexPath.section == 0 {
+            filter.country = Country.allCases[inPickerRow]
+        } else if fatherIndexPath.section == 1 {
+            filter.category = Category.allCases[inPickerRow]
+        } else {
+            print("Source selected")
+//            filter.source =
+        }
+        
         cell.configureCell(text: text, placeholder: nil)
     }
 }
