@@ -27,7 +27,7 @@ public class Settings {
         get {
             let selectedFilterData = userDefaults.data(forKey: "selectedFilter") ?? Data()
             let filter = try? JSONDecoder().decode(Filter.self, from: selectedFilterData)
-            return filter != nil ? filter! : Filter(category: .allCategories, country: .ua, source: nil)
+            return filter != nil ? filter! : Filter(category: .allCategories, country: .ua, sources: nil)
         }
         set {
             let selectedFilterData = try? JSONEncoder().encode(newValue)

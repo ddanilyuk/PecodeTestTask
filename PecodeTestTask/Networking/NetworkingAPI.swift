@@ -11,7 +11,7 @@ import Foundation
 struct Filter: Codable {
     var category: Category?
     var country: Country?
-    var source: Source?
+    var sources: [Source]?
 }
 
 
@@ -43,9 +43,14 @@ class NetworkingAPI {
             queryItems.append(URLQueryItem(name: "q", value: querie))
         }
         
-        if let source = filter.source {
-//            print(source.id)
-            queryItems.append(URLQueryItem(name: "sources", value: source.id ?? ""))
+        if let sources = filter.sources {
+
+            if !sources.isEmpty {
+                queryItems.append(
+                    URLQueryItem(name: "sources", value: sources.map({$0.id}).reduce("", {part1, part2 in "\(part1 ?? ""),\(part2 ?? "")"}))
+                )
+            }
+
         }
         
         guard var urlComponents = URLComponents(string: "https://newsapi.org/v2/top-headlines") else { return }

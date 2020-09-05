@@ -32,6 +32,8 @@
 		5F2FB04725043FC600570D27 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04625043FC600570D27 /* Category.swift */; };
 		5F2FB04925043FD700570D27 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04825043FD700570D27 /* Country.swift */; };
 		5F2FB04B2504466800570D27 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04A2504466800570D27 /* FilterType.swift */; };
+		5F2FB04F25044BBD00570D27 /* SourceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04D25044BBD00570D27 /* SourceTableViewCell.swift */; };
+		5F2FB05025044BBD00570D27 /* SourceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F2FB04E25044BBD00570D27 /* SourceTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,8 @@
 		5F2FB04625043FC600570D27 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		5F2FB04825043FD700570D27 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 		5F2FB04A2504466800570D27 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
+		5F2FB04D25044BBD00570D27 /* SourceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceTableViewCell.swift; sourceTree = "<group>"; };
+		5F2FB04E25044BBD00570D27 /* SourceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SourceTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +181,15 @@
 			path = TextFieldAndButtonTableViewCell;
 			sourceTree = "<group>";
 		};
+		5F2FB04C25044B9B00570D27 /* SourceTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5F2FB04D25044BBD00570D27 /* SourceTableViewCell.swift */,
+				5F2FB04E25044BBD00570D27 /* SourceTableViewCell.xib */,
+			);
+			path = SourceTableViewCell;
+			sourceTree = "<group>";
+		};
 		5FBC05C42503AE0D001278F1 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +202,7 @@
 		5FBC05C52503AE2A001278F1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5F2FB04C25044B9B00570D27 /* SourceTableViewCell */,
 				5F0AB56A25016FAB0086208E /* ArticleTableViewCell */,
 				5F0AB57B250191970086208E /* DropDownPickerTableViewCell */,
 				5F0AB57F250191980086208E /* TextFieldAndButtonTableViewCell */,
@@ -258,6 +272,7 @@
 				5F0AB55D250163A80086208E /* Assets.xcassets in Resources */,
 				5F0AB56E25016FCC0086208E /* ArticleTableViewCell.xib in Resources */,
 				5F0AB58A250191980086208E /* DropDownPickerTableViewCell.xib in Resources */,
+				5F2FB05025044BBD00570D27 /* SourceTableViewCell.xib in Resources */,
 				5F0AB55B250163A70086208E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,6 +292,7 @@
 				5F0AB584250191980086208E /* DropDownPickerTableViewCell.swift in Sources */,
 				5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */,
 				5F2FB03D2503B60100570D27 /* Settings.swift in Sources */,
+				5F2FB04F25044BBD00570D27 /* SourceTableViewCell.swift in Sources */,
 				5F2FB04525043FAA00570D27 /* Source.swift in Sources */,
 				5F0AB554250163A70086208E /* AppDelegate.swift in Sources */,
 				5F2FB04925043FD700570D27 /* Country.swift in Sources */,

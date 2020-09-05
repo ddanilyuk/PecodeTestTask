@@ -260,7 +260,7 @@ extension MainViewController: UISearchResultsUpdating {
             if lowerCaseSearchText.count < 2 {
                 self.startLoading(with: "Searching news...")
             }
-            let serchingFilter = Filter(category: nil, country: settings.selectedFilter.country, source: settings.selectedFilter.source)
+            let serchingFilter = Filter(category: nil, country: settings.selectedFilter.country, sources: settings.selectedFilter.sources)
             
             api.getNews(querie: lowerCaseSearchText, filter: serchingFilter, page: 1) { [weak self] data in
                 

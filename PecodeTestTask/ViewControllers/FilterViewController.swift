@@ -19,42 +19,51 @@ class FilterViewController: UIViewController {
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
     var isCountryListOpen: Bool = false
-    
     var isCategoryListOpen: Bool = false
     
-    var isSourceListOpen: Bool = false
-
-    var selectedRowInPickers1: [Int: Int] = [ : ]
-    var selectedRowInPickers2: [Int: Int] = [ : ]
+    var selectedRowInPickers: [Int: Int] = [ : ]
     
     var delegate: FilterViewControllerDelegate?
 
     var settings = Settings()
     
-    var filter = Filter()
+//    var filter = Filter()
     
     var filterType: FilterType = .countryAndCategory
+    
+    var selectedSources: [Source] = []
+    var selectedCountry: Country?
+    var selectedCategory: Category?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupSegmentControl()
         
-        filter = settings.selectedFilter
+//        filter = settings.selectedFilter
+        selectedCountry = settings.selectedFilter.country
+        selectedCategory = settings.selectedFilter.category
+        selectedSources = settings.selectedFilter.sources ?? []
         
-        selectedRowInPickers1[0] = Int(Country.allCases.firstIndex { $0 == filter.country } ?? 0)
-        selectedRowInPickers1[1] = Int(Category.allCases.firstIndex { $0 == filter.category } ?? 0)
-        selectedRowInPickers2[0] = Int(settings.allSources.firstIndex { $0 == filter.source } ?? 0)
+        selectedRowInPickers[0] = Int(Country.allCases.firstIndex { $0 == selectedCountry } ?? 0)
+        selectedRowInPickers[1] = Int(Category.allCases.firstIndex { $0 == selectedCategory } ?? 0)
+//        selectedRowInPickers2[0] = Int(settings.allSources.firstIndex { $0 == filter.source } ?? 0)
         
-        if filter.category == nil && filter.country == nil {
+        if selectedCategory == nil && selectedCountry == nil {
             segmentControl.selectedSegmentIndex = 1
             segmentControlDidChange(segmentControl)
+            
+            selectedCountry = .ua
+            selectedCategory = .allCategories
         }
     }
     
     private func setupTableView() {
         tableView.register(UINib(nibName: TextFieldAndButtonTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: TextFieldAndButtonTableViewCell.identifier)
         tableView.register(UINib(nibName: DropDownPickerTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: DropDownPickerTableViewCell.identifier)
+        tableView.register(UINib(nibName: SourceTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: SourceTableViewCell.identifier)
+
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -64,8 +73,24 @@ class FilterViewController: UIViewController {
     }
     
     @IBAction func didPressSave(_ sender: UIBarButtonItem) {
-    
-        delegate?.filterParametersChanged(filter: filter)
+        var newFilter = Filter(category: nil, country: nil, sources: nil)
+
+        if filterType == .source {
+            if selectedSources.isEmpty {
+                let alert = UIAlertController(title: nil, message: "Plese, select at least one source!", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                present(alert, animated: true, completion: nil)
+                return
+            } else {
+                newFilter.sources = selectedSources
+            }
+        } else if filterType == .countryAndCategory {
+            newFilter.category = selectedCategory
+            newFilter.country = selectedCountry
+        }
+        
+        delegate?.filterParametersChanged(filter: newFilter)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -79,6 +104,7 @@ class FilterViewController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 0:
             filterType = .countryAndCategory
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             tableView.reloadData()
         case 1:
             filterType = .source
@@ -108,17 +134,21 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
                 return isCategoryListOpen ? 2 : 1
             }
         } else {
-            return isSourceListOpen ? 2 : 1
+            return settings.allSources.count
         }
         return 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filterType == .source ? 1 : 2
+        return filterType == .countryAndCategory ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.row == 1 ? 150 : 45
+        if filterType == .countryAndCategory {
+            return indexPath.row == 1 ? 150 : 45
+        } else {
+            return 45
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -129,14 +159,23 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
         if filterType == .countryAndCategory {
             return ["Select the country for which you want to receive news", "Select a news category"][section]
         } else {
-            return "Select the information source"
+            return "Select the information sources"
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if filterType == .source {
+            guard let sourceViewCell = tableView.dequeueReusableCell(withIdentifier: SourceTableViewCell.identifier, for: indexPath) as? SourceTableViewCell else { return UITableViewCell() }
+            sourceViewCell.source = settings.allSources[indexPath.row]
+            
+            sourceViewCell.isSourceSelected = selectedSources.contains(where: { $0.id == sourceViewCell.source?.id && $0.name == sourceViewCell.source?.name })
+
+            return sourceViewCell
+        }
        
         if indexPath.row == 0 {
-            guard let newLessonCell = tableView.dequeueReusableCell(withIdentifier: TextFieldAndButtonTableViewCell.identifier, for: indexPath) as? TextFieldAndButtonTableViewCell else {
+            guard let mainCell = tableView.dequeueReusableCell(withIdentifier: TextFieldAndButtonTableViewCell.identifier, for: indexPath) as? TextFieldAndButtonTableViewCell else {
                 assertionFailure("Cell not created")
                 return UITableViewCell()
             }
@@ -144,53 +183,62 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
   
             
             var placeholder = ""
-            if filterType == .countryAndCategory {
-                text = [filter.country?.getFullName(), filter.category?.rawValue][indexPath.section]
-                placeholder = ["Country", "Category"][indexPath.section]
-            } else {
-                text = (filter.source?.name ?? filter.source?.id) ?? ""
-                placeholder = "Source of inforamtion"
-            }
+            text = [selectedCountry?.getFullName(), selectedCategory?.rawValue][indexPath.section]
+            placeholder = ["Country", "Category"][indexPath.section]
             
-            newLessonCell.configureCell(text: text, placeholder: placeholder)
-            newLessonCell.indexPath = IndexPath(row: 0, section: indexPath.section)
-            newLessonCell.delegate = self
-            newLessonCell.selectionStyle = .none
-            newLessonCell.mainTextField.isEnabled = false
+            mainCell.configureCell(text: text, placeholder: placeholder)
+            mainCell.indexPath = IndexPath(row: 0, section: indexPath.section)
+            mainCell.delegate = self
+            mainCell.selectionStyle = .none
+            mainCell.mainTextField.isEnabled = false
             
-            return newLessonCell
+            return mainCell
 
         } else {
-            guard let cellWithOnePicker = tableView.dequeueReusableCell(withIdentifier: DropDownPickerTableViewCell.identifier, for: indexPath) as? DropDownPickerTableViewCell else {
+            guard let dropDownCell = tableView.dequeueReusableCell(withIdentifier: DropDownPickerTableViewCell.identifier, for: indexPath) as? DropDownPickerTableViewCell else {
                 assertionFailure("Cell not created")
                 return UITableViewCell()
             }
-            cellWithOnePicker.fatherIndexPath = IndexPath(row: 0, section: indexPath.section)
+            dropDownCell.fatherIndexPath = IndexPath(row: 0, section: indexPath.section)
 
             var dataArray: [String] = []
-            if filterType == .countryAndCategory {
-                if indexPath.section == 0 {
-                    dataArray = Country.allCases.map({ $0.getFullName() })
-                } else if indexPath.section == 1 {
-                    dataArray = Category.allCases.map({ $0.rawValue })
-                }
-            } else {
-                dataArray = settings.allSources.map( { (($0.name ?? $0.id) ?? "") })
+            
+            if indexPath.section == 0 {
+                dataArray = Country.allCases.map({ $0.getFullName() })
+            } else if indexPath.section == 1 {
+                dataArray = Category.allCases.map({ $0.rawValue })
             }
          
-            cellWithOnePicker.dataArray = dataArray
-            cellWithOnePicker.delegate = self
-            if filterType == .countryAndCategory {
-                cellWithOnePicker.previousSelectedIndex = selectedRowInPickers1[indexPath.section] ?? 0
-            } else {
-                cellWithOnePicker.previousSelectedIndex = selectedRowInPickers2[indexPath.section] ?? 0
-            }
-            cellWithOnePicker.selectionStyle = .none
+            dropDownCell.dataArray = dataArray
+            dropDownCell.delegate = self
+            dropDownCell.previousSelectedIndex = selectedRowInPickers[indexPath.section] ?? 0
+
+            dropDownCell.selectionStyle = .none
             
-            return cellWithOnePicker
+            return dropDownCell
         }
         
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? SourceTableViewCell else { return }
+        
+        if let source = cell.source {
+            let isInSelectedSources = selectedSources.contains(where: { $0.id == source.id && $0.name == source.name })
+            
+            if isInSelectedSources {
+                selectedSources.removeAll(where: { $0.id == source.id && $0.name == source.name })
+            } else {
+                selectedSources.append(source)
+            }
+            
+            cell.isSourceSelected = !isInSelectedSources
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        
+       
+    }
+    
 }
 
 
@@ -200,17 +248,12 @@ extension FilterViewController: TextFieldAndButtonTableViewCellDelegate {
         
         var switcherValue = false
         
-        if filterType == .countryAndCategory {
-            if indexPath.section == 0 {
-                isCountryListOpen.toggle()
-                switcherValue = isCountryListOpen
-            } else if indexPath.section == 1 {
-                isCategoryListOpen.toggle()
-                switcherValue = isCategoryListOpen
-            }
-        } else {
-            isSourceListOpen.toggle()
-            switcherValue = isSourceListOpen
+        if indexPath.section == 0 {
+            isCountryListOpen.toggle()
+            switcherValue = isCountryListOpen
+        } else if indexPath.section == 1 {
+            isCategoryListOpen.toggle()
+            switcherValue = isCategoryListOpen
         }
         
         if switcherValue {
@@ -230,20 +273,12 @@ extension FilterViewController: DropDownPickerTableViewCellDelegate {
             return
         }
         
-        if filterType == .countryAndCategory {
-            selectedRowInPickers1[fatherIndexPath.section] = inPickerRow
-
-            filter.source = nil
-            if fatherIndexPath.section == 0 {
-                filter.country = Country.allCases[inPickerRow]
-            } else if fatherIndexPath.section == 1 {
-                filter.category = Category.allCases[inPickerRow]
-            }
-        } else {
-            selectedRowInPickers2[fatherIndexPath.section] = inPickerRow
-            filter.category = nil
-            filter.country = nil
-            filter.source = settings.allSources[inPickerRow]
+        selectedRowInPickers[fatherIndexPath.section] = inPickerRow
+        
+        if fatherIndexPath.section == 0 {
+            selectedCountry = Country.allCases[inPickerRow]
+        } else if fatherIndexPath.section == 1 {
+            selectedCategory = Category.allCases[inPickerRow]
         }
         
         cell.configureCell(text: text, placeholder: nil)
