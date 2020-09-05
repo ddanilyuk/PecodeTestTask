@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
     
     /// Searching
     var isSearching = false
+    var newsInSearch: [Article] = []
     let search = UISearchController(searchResultsController: nil)
     
     var settings = Settings()
@@ -45,26 +46,25 @@ class MainViewController: UIViewController {
         setupFirstLaunch()
         
         
-
-        api.getNews(querie: nil, filter: settings.selectedFilter, page: 1) { [weak self] data  in
-            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
-            if let serverResponse = serverResponse {
-                DispatchQueue.main.async {
-                    self?.tableViewRefreshControll.endRefreshing()
-                    self?.stopLoading()
-                    self?.news = []
-                    self?.downloadAndCacheImagesForNewNews(atricles: serverResponse.articles)
-                    self?.news = serverResponse.articles
-                    self?.tableView.reloadData()
-                }
-            }
-        }
+        loadFirstPage()
+//        api.getNews(querie: nil, filter: settings.selectedFilter, page: 1) { [weak self] data  in
+//            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
+//            if let serverResponse = serverResponse {
+//                DispatchQueue.main.async {
+//                    self?.tableViewRefreshControll.endRefreshing()
+//                    self?.stopLoading()
+//                    self?.news = []
+//                    self?.downloadAndCacheImagesForNewNews(atricles: serverResponse.articles)
+//                    self?.news = serverResponse.articles
+//                    self?.tableView.reloadData()
+//                }
+//            }
+//        }
     }
 
     
     @objc func refresh(sender: UIRefreshControl) {
-        tableView.reloadData()
-        sender.endRefreshing()
+        loadFirstPage()
     }
     
     private func setupRefreshControll() {
@@ -93,7 +93,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupFirstLaunch() {
-        if !settings.isFirstLaunch {
+        if !settings.isFirstLaunch || settings.allSources.isEmpty {
             startLoading(with: "Loading all possible sources...")
             api.getAllSources { [weak self] sources in
                 self?.settings.allSources = sources
@@ -159,6 +159,24 @@ class MainViewController: UIViewController {
         }
     }
     
+    func loadFirstPage() {
+        print(settings.selectedFilter)
+        api.getNews(querie: nil, filter: settings.selectedFilter, page: 1) { [weak self] data  in
+            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
+            if let serverResponse = serverResponse {
+                DispatchQueue.main.async {
+                    print("LOG: First page of news loaded...")
+                    self?.tableViewRefreshControll.endRefreshing()
+                    self?.stopLoading()
+                    self?.news = []
+                    self?.downloadAndCacheImagesForNewNews(atricles: serverResponse.articles)
+                    self?.news = serverResponse.articles
+                    self?.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
 }
 
 
@@ -169,14 +187,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return news.count
+        return isSearching ? newsInSearch.count : news.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ArticleTableViewCell.identifier, for: indexPath) as? ArticleTableViewCell else { return UITableViewCell() }
         
-        let article = news[indexPath.row]
+        
+        let article = isSearching ? newsInSearch[indexPath.row] : news[indexPath.row]
         
         cell.articleNameLabel.text = article.title
         cell.articleDescriptionLabel.text = article.description
@@ -196,6 +215,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
+        guard !isSearching else { return }
         /// Functions to load more news when user reached end
         if news.count == indexPath.row + 1 {
             
@@ -235,28 +255,63 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 
 extension MainViewController: UISearchResultsUpdating {
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
-        print(searchText)
+        let lowerCaseSearchText = searchText.lowercased()
+        
+        if lowerCaseSearchText == "" {
+            newsInSearch = []
+            isSearching = false
+            self.stopLoading()
+        } else {
+            isSearching = true
+        }
+        
+        if isSearching {
+            if lowerCaseSearchText.count < 2 {
+                self.startLoading(with: "Searching news...")
+            }
+            let serchingFilter = Filter(category: nil, country: settings.selectedFilter.country, source: settings.selectedFilter.source)
+            api.getNews(querie: searchText, filter: serchingFilter, page: 1) { [weak self] data in
+                if let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data) {
+                    DispatchQueue.main.async {
+                        guard let this = self else { return }
+                        this.stopLoading()
+//                        print("--------")
+//                        print("this.newsInSearch.count", this.newsInSearch.count)
+                        this.newsInSearch.removeAll { article in
+                            return !serverResponse.articles.contains(where: { $0.url == article.url })
+                        }
+                        print("this.newsInSearch.count", this.newsInSearch.count)
+                        let newArticles = serverResponse.articles.filter { article in
+                            !this.newsInSearch.contains(where: { $0.url == article.url } )
+                        }
+                        this.newsInSearch.append(contentsOf: newArticles)
+                        this.tableView.reloadData()
+                        
+                        print("newArticles.count", newArticles.count)
+                        print("serverResponse.articles.count", serverResponse.articles.count)
+                        print("this.newsInSearch.count", this.newsInSearch.count)
+                    }
+                    
+                }
+            }
+            
+        }
+        tableView.reloadData()
+
     }
 }
 
+
 extension MainViewController: FilterViewControllerDelegate {
+    
     func filterParametersChanged(filter: Filter) {
         settings.selectedFilter = filter
-        
-        
-        api.getNews(querie: nil, filter: filter, page: 1) { [weak self] data in
-            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
-            if let serverResponse = serverResponse {
-                DispatchQueue.main.async {
-                    self?.news = serverResponse.articles
-                    self?.tableView.reloadData()
-                }
-            }
-        }
-        
+        print(filter)
+        self.startLoading(with: "Loadin news...")
+        loadFirstPage()
     }
-    
     
 }

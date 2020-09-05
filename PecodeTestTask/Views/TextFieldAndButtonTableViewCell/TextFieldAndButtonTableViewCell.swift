@@ -10,7 +10,6 @@ import UIKit
 
 protocol TextFieldAndButtonTableViewCellDelegate {
     func userDidPressShowDetails(at indexPath: IndexPath)
-    func userChangeTextInTextField(at indexPath: IndexPath, text: String)
 }
 
 
@@ -29,7 +28,6 @@ class TextFieldAndButtonTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        mainTextField.addTarget(self, action: #selector(textFieldDidChange), for:.editingChanged)
     }
     
     /// Configure text field with text or placeholder
@@ -38,13 +36,6 @@ class TextFieldAndButtonTableViewCell: UITableViewCell {
         mainTextField.text = text
     }
     
-    @objc func textFieldDidChange() {
-        guard let indexPath = indexPath else {
-            assertionFailure("IndexPath not implemented")
-            return
-        }
-        delegate?.userChangeTextInTextField(at: indexPath, text: String(mainTextField.text ?? ""))
-    }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

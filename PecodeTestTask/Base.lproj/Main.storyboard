@@ -67,7 +67,6 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="X90-Ys-qUC" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="As7-7e-lxe"/>
                             <constraint firstItem="QYc-Y9-vtx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="FBm-LE-dd4"/>
@@ -113,16 +112,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Rxy-Qg-782">
-                                <rect key="frame" x="0.0" y="56" width="375" height="702"/>
+                                <rect key="frame" x="0.0" y="126" width="375" height="632"/>
                             </tableView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gCZ-8L-FBz">
+                                <rect key="frame" x="37.666666666666657" y="76" width="300" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="qiD-fQ-Ife"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Country &amp; Category"/>
+                                    <segment title="Source"/>
+                                </segments>
+                                <color key="selectedSegmentTintColor" name="AccentColor"/>
+                                <connections>
+                                    <action selector="segmentControlDidChange:" destination="lB3-0h-RrK" eventType="valueChanged" id="SRJ-zo-dyk"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wh7-4P-Xte"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Rxy-Qg-782" firstAttribute="top" secondItem="wh7-4P-Xte" secondAttribute="top" id="7Qc-lK-yoe"/>
+                            <constraint firstItem="Rxy-Qg-782" firstAttribute="top" secondItem="gCZ-8L-FBz" secondAttribute="bottom" constant="20" id="7Qc-lK-yoe"/>
+                            <constraint firstItem="gCZ-8L-FBz" firstAttribute="top" secondItem="wh7-4P-Xte" secondAttribute="top" constant="20" id="CbQ-IJ-QkL"/>
                             <constraint firstItem="wh7-4P-Xte" firstAttribute="trailing" secondItem="Rxy-Qg-782" secondAttribute="trailing" id="MsX-d7-0gJ"/>
                             <constraint firstAttribute="bottom" secondItem="Rxy-Qg-782" secondAttribute="bottom" id="N2e-Rf-Rux"/>
+                            <constraint firstItem="gCZ-8L-FBz" firstAttribute="centerX" secondItem="wh7-4P-Xte" secondAttribute="centerX" id="UwG-w6-Y47"/>
                             <constraint firstItem="Rxy-Qg-782" firstAttribute="leading" secondItem="wh7-4P-Xte" secondAttribute="leading" id="bTx-f1-tex"/>
+                            <constraint firstItem="gCZ-8L-FBz" firstAttribute="width" secondItem="8eY-Vh-xKL" secondAttribute="width" multiplier="0.8" id="eP1-s4-YSq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Filter" largeTitleDisplayMode="never" id="oVb-2L-qXM">
@@ -140,6 +156,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="segmentControl" destination="gCZ-8L-FBz" id="7Bu-gj-tLx"/>
                         <outlet property="tableView" destination="Rxy-Qg-782" id="Cgj-AP-vGh"/>
                     </connections>
                 </viewController>

@@ -16,10 +16,10 @@ public class Settings {
     
     var isFirstLaunch: Bool {
         get {
-            return userDefaults.bool(forKey: "isFirstLaunch")
+            return userDefaults.bool(forKey: "isFirstLaunch2")
         }
         set {
-            userDefaults.set(newValue, forKey: "isFirstLaunch")
+            userDefaults.set(newValue, forKey: "isFirstLaunch2")
         }
     }
     

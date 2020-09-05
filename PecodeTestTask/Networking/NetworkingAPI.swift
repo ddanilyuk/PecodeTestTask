@@ -37,12 +37,23 @@ class NetworkingAPI {
         if let country = filter.country {
             queryItems.append(URLQueryItem(name: "country", value: country.rawValue))
         }
-                
+        
+        if let querie = querie {
+            queryItems.append(URLQueryItem(name: "q", value: querie))
+        }
+        
+        if let source = filter.source {
+//            print(source.id)
+            queryItems.append(URLQueryItem(name: "sources", value: source.id ?? ""))
+        }
+        
         guard var urlComponents = URLComponents(string: "https://newsapi.org/v2/top-headlines") else { return }
         
         urlComponents.queryItems = queryItems
         
+        
         guard let url = urlComponents.url else { return }
+        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -70,12 +81,15 @@ class NetworkingAPI {
         guard let url = URL(string: stringURL) else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
+        print(url)
         let dataTask = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if let error = error {
                 print(error.localizedDescription)
             }
             if let data = data {
+                let str = String(decoding: data, as: UTF8.self)
+                print(str)
+
                 let decoder = JSONDecoder()
                 let sourcesResonse = try? decoder.decode(AllSorcesResponse.self, from: data)
                 complition(sourcesResonse?.sources ?? [])

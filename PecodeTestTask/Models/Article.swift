@@ -18,17 +18,17 @@ struct ServerResponse: Codable {
 
 struct AllSorcesResponse: Codable {
     var status: String
-    var sources: [Source]
+    var sources: [Source]?
 }
 
-struct Source: Codable {
+struct Source: Codable, Equatable {
     var id: String?
     var name: String?
     var description: String?
     var url: String?
     var category: Category?
     var language: String?
-    var country: Country?
+    var country: String?
 }
 
 
@@ -47,13 +47,13 @@ struct Article: Codable {
 // Can`t mix with source
 enum Category: String, CaseIterable, Codable {
     case allCategories = "All categories"
-    case business = "Business"
-    case entertainment = "Enteratainment"
-    case general = "General"
-    case health = "Health"
-    case science = "Science"
-    case sports = "Sports"
-    case technology = "Technology"
+    case business = "business"
+    case entertainment = "entertainment"
+    case general = "general"
+    case health = "health"
+    case science = "science"
+    case sports = "sports"
+    case technology = "technology"
 }
 
 
@@ -87,6 +87,7 @@ enum Country: String, CaseIterable, Codable {
     case lt
     case lv
     case ma
+    case inn = "in"
     case mx
     case my
     case ng
@@ -136,6 +137,8 @@ enum Country: String, CaseIterable, Codable {
             return "China"
         case .co:
             return "Colombia"
+        case .inn:
+            return "India"
         case .cu:
             return "Cuba"
         case .cz:
