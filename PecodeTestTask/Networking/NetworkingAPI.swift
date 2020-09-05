@@ -17,7 +17,8 @@ struct Filter: Codable {
 
 class NetworkingAPI {
 
-    static let apiKEY = "411b721aa2e94b808962e7ab284f1ee4"
+    static let apiKEY = "fc72af4dbdfe47c8b80ceca8463fd809"
+//    static let apiKEY = "411b721aa2e94b808962e7ab284f1ee4"
     
     typealias DataComplition = (Data) -> ()
     
@@ -64,7 +65,7 @@ class NetworkingAPI {
             }
             
             if let data = data {
-//                let str = String(decoding: data, as: UTF8.self)
+                let str = String(decoding: data, as: UTF8.self)
 //                print(str)
                 complition(data)
             }
@@ -91,7 +92,7 @@ class NetworkingAPI {
                 print(str)
 
                 let decoder = JSONDecoder()
-                let sourcesResonse = try? decoder.decode(AllSorcesResponse.self, from: data)
+                let sourcesResonse = try? decoder.decode(AllSorcesServerResponse.self, from: data)
                 complition(sourcesResonse?.sources ?? [])
             }
         })

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SafariServices
+
 
 class MainViewController: UIViewController {
 
@@ -14,7 +16,6 @@ class MainViewController: UIViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
-    
     
     var news: [Article] = []
     
@@ -25,11 +26,12 @@ class MainViewController: UIViewController {
     var newsInSearch: [Article] = []
     let search = UISearchController(searchResultsController: nil)
     
+    
     var settings = Settings()
+    
     
     var currentPage: Int = 1
     var articlesInPage: Int = 20
-    
     
     ///
     var tableViewRefreshControll: UIRefreshControl!
@@ -45,24 +47,9 @@ class MainViewController: UIViewController {
 
         setupFirstLaunch()
         
-        
         loadFirstPage()
-//        api.getNews(querie: nil, filter: settings.selectedFilter, page: 1) { [weak self] data  in
-//            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
-//            if let serverResponse = serverResponse {
-//                DispatchQueue.main.async {
-//                    self?.tableViewRefreshControll.endRefreshing()
-//                    self?.stopLoading()
-//                    self?.news = []
-//                    self?.downloadAndCacheImagesForNewNews(atricles: serverResponse.articles)
-//                    self?.news = serverResponse.articles
-//                    self?.tableView.reloadData()
-//                }
-//            }
-//        }
     }
 
-    
     @objc func refresh(sender: UIRefreshControl) {
         loadFirstPage()
     }
@@ -124,7 +111,6 @@ class MainViewController: UIViewController {
         definesPresentationContext = true
     }
     
-    
     @IBAction func didPressFilterButton(_ sender: UIButton) {
         guard let filterViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(identifier: FilterViewController.identifier) as? FilterViewController else {
             return
@@ -160,9 +146,8 @@ class MainViewController: UIViewController {
     }
     
     func loadFirstPage() {
-        print(settings.selectedFilter)
         api.getNews(querie: nil, filter: settings.selectedFilter, page: 1) { [weak self] data  in
-            let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
+            let serverResponse = try? JSONDecoder().decode(ArticlesServerResponse.self, from: data)
             if let serverResponse = serverResponse {
                 DispatchQueue.main.async {
                     print("LOG: First page of news loaded...")
@@ -191,9 +176,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ArticleTableViewCell.identifier, for: indexPath) as? ArticleTableViewCell else { return UITableViewCell() }
-        
         
         let article = isSearching ? newsInSearch[indexPath.row] : news[indexPath.row]
         
@@ -204,14 +187,22 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         if let urlToImage = article.urlToImage {
             cell.articleImageURL = URL(string: urlToImage)
         }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let article = isSearching ? newsInSearch[indexPath.row] : news[indexPath.row]
+        
+        if let url = URL(string: article.url) {
+            let config = SFSafariViewController.Configuration()
+            config.entersReaderIfAvailable = true
+            let vc = SFSafariViewController(url: url, configuration: config)
+            present(vc, animated: true, completion: nil)
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
@@ -221,9 +212,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             
             print("LOG: Downloading new news!")
             
-            
             api.getNews(querie: nil, filter: settings.selectedFilter, page: currentPage + 1) { [weak self] data  in
-                let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data)
+                let serverResponse = try? JSONDecoder().decode(ArticlesServerResponse.self, from: data)
                 if let serverResponse = serverResponse {
                     DispatchQueue.main.async {
                         guard let this = self else { return }
@@ -244,11 +234,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
-            
         } else {
             print("LOG: This \(indexPath) is not last cell")
         }
-        
     }
     
 }
@@ -273,26 +261,16 @@ extension MainViewController: UISearchResultsUpdating {
                 self.startLoading(with: "Searching news...")
             }
             let serchingFilter = Filter(category: nil, country: settings.selectedFilter.country, source: settings.selectedFilter.source)
-            api.getNews(querie: searchText, filter: serchingFilter, page: 1) { [weak self] data in
-                if let serverResponse = try? JSONDecoder().decode(ServerResponse.self, from: data) {
+            
+            api.getNews(querie: lowerCaseSearchText, filter: serchingFilter, page: 1) { [weak self] data in
+                
+                if let serverResponse = try? JSONDecoder().decode(ArticlesServerResponse.self, from: data) {
                     DispatchQueue.main.async {
                         guard let this = self else { return }
                         this.stopLoading()
-//                        print("--------")
-//                        print("this.newsInSearch.count", this.newsInSearch.count)
-                        this.newsInSearch.removeAll { article in
-                            return !serverResponse.articles.contains(where: { $0.url == article.url })
-                        }
-                        print("this.newsInSearch.count", this.newsInSearch.count)
-                        let newArticles = serverResponse.articles.filter { article in
-                            !this.newsInSearch.contains(where: { $0.url == article.url } )
-                        }
-                        this.newsInSearch.append(contentsOf: newArticles)
+                        print(serverResponse.articles.count)
+                        this.newsInSearch = serverResponse.articles
                         this.tableView.reloadData()
-                        
-                        print("newArticles.count", newArticles.count)
-                        print("serverResponse.articles.count", serverResponse.articles.count)
-                        print("this.newsInSearch.count", this.newsInSearch.count)
                     }
                     
                 }
@@ -300,8 +278,8 @@ extension MainViewController: UISearchResultsUpdating {
             
         }
         tableView.reloadData()
-
     }
+    
 }
 
 
@@ -309,7 +287,6 @@ extension MainViewController: FilterViewControllerDelegate {
     
     func filterParametersChanged(filter: Filter) {
         settings.selectedFilter = filter
-        print(filter)
         self.startLoading(with: "Loadin news...")
         loadFirstPage()
     }

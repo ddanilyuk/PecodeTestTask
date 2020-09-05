@@ -13,12 +13,6 @@ protocol FilterViewControllerDelegate {
 }
 
 
-enum FilterType {
-    case countryAndCategory
-    case source
-}
-
-
 class FilterViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
@@ -30,11 +24,8 @@ class FilterViewController: UIViewController {
     
     var isSourceListOpen: Bool = false
 
-    
-    
     var selectedRowInPickers1: [Int: Int] = [ : ]
     var selectedRowInPickers2: [Int: Int] = [ : ]
-
     
     var delegate: FilterViewControllerDelegate?
 
@@ -47,15 +38,18 @@ class FilterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupSegmentControl()
         
         filter = settings.selectedFilter
-        print(settings.allSources.count)
         
         selectedRowInPickers1[0] = Int(Country.allCases.firstIndex { $0 == filter.country } ?? 0)
         selectedRowInPickers1[1] = Int(Category.allCases.firstIndex { $0 == filter.category } ?? 0)
-        
         selectedRowInPickers2[0] = Int(settings.allSources.firstIndex { $0 == filter.source } ?? 0)
-//        selectedRowInPickers[2] = Int(Category.allCases.firstIndex { $0 == filter.category } ?? 0)
+        
+        if filter.category == nil && filter.country == nil {
+            segmentControl.selectedSegmentIndex = 1
+            segmentControlDidChange(segmentControl)
+        }
     }
     
     private func setupTableView() {
@@ -86,11 +80,9 @@ class FilterViewController: UIViewController {
         case 0:
             filterType = .countryAndCategory
             tableView.reloadData()
-            print("Country and category")
         case 1:
             filterType = .source
             tableView.reloadData()
-            print("Source")
         default:
             break
         }
@@ -98,7 +90,7 @@ class FilterViewController: UIViewController {
     
     private func setupSegmentControl() {
         let titleTextAttributesNormal = [NSAttributedString.Key.foregroundColor: UIColor.systemRed]
-        let titleTextAttributesSelected = [NSAttributedString.Key.foregroundColor: UIColor.label]
+        let titleTextAttributesSelected = [NSAttributedString.Key.foregroundColor: UIColor.white]
         segmentControl.setTitleTextAttributes(titleTextAttributesNormal, for: .normal)
         segmentControl.setTitleTextAttributes(titleTextAttributesSelected, for: .selected)
     }
@@ -143,8 +135,6 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
-        
-        
         if indexPath.row == 0 {
             guard let newLessonCell = tableView.dequeueReusableCell(withIdentifier: TextFieldAndButtonTableViewCell.identifier, for: indexPath) as? TextFieldAndButtonTableViewCell else {
                 assertionFailure("Cell not created")
@@ -176,8 +166,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cellWithOnePicker.fatherIndexPath = IndexPath(row: 0, section: indexPath.section)
-            
-            //
+
             var dataArray: [String] = []
             if filterType == .countryAndCategory {
                 if indexPath.section == 0 {
@@ -234,12 +223,12 @@ extension FilterViewController: TextFieldAndButtonTableViewCellDelegate {
 
 
 extension FilterViewController: DropDownPickerTableViewCellDelegate {
+    
     func userChangedDropDownCellAt(fatherIndexPath: IndexPath, text: String, inPickerRow: Int) {
         guard let cell = tableView.cellForRow(at: fatherIndexPath) as? TextFieldAndButtonTableViewCell else {
             assertionFailure("Invalid indexPath")
             return
         }
-        
         
         if filterType == .countryAndCategory {
             selectedRowInPickers1[fatherIndexPath.section] = inPickerRow
@@ -259,4 +248,5 @@ extension FilterViewController: DropDownPickerTableViewCellDelegate {
         
         cell.configureCell(text: text, placeholder: nil)
     }
+    
 }

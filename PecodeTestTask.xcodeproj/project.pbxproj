@@ -26,6 +26,12 @@
 		5F0AB58A250191980086208E /* DropDownPickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */; };
 		5F2FB03D2503B60100570D27 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB03C2503B60100570D27 /* Settings.swift */; };
 		5F2FB03F2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB03E2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift */; };
+		5F2FB04125043F5000570D27 /* ArticlesServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04025043F5000570D27 /* ArticlesServerResponse.swift */; };
+		5F2FB04325043F9500570D27 /* AllSorcesServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04225043F9500570D27 /* AllSorcesServerResponse.swift */; };
+		5F2FB04525043FAA00570D27 /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04425043FAA00570D27 /* Source.swift */; };
+		5F2FB04725043FC600570D27 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04625043FC600570D27 /* Category.swift */; };
+		5F2FB04925043FD700570D27 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04825043FD700570D27 /* Country.swift */; };
+		5F2FB04B2504466800570D27 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2FB04A2504466800570D27 /* FilterType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +56,12 @@
 		5F0AB582250191980086208E /* DropDownPickerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DropDownPickerTableViewCell.xib; path = PecodeTestTask/DropDownPickerTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 		5F2FB03C2503B60100570D27 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		5F2FB03E2503CB1D00570D27 /* UIActivityIndicator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicator+Extensions.swift"; sourceTree = "<group>"; };
+		5F2FB04025043F5000570D27 /* ArticlesServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesServerResponse.swift; sourceTree = "<group>"; };
+		5F2FB04225043F9500570D27 /* AllSorcesServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSorcesServerResponse.swift; sourceTree = "<group>"; };
+		5F2FB04425043FAA00570D27 /* Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
+		5F2FB04625043FC600570D27 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		5F2FB04825043FD700570D27 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		5F2FB04A2504466800570D27 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +149,12 @@
 			isa = PBXGroup;
 			children = (
 				5F0AB574250172160086208E /* Article.swift */,
+				5F2FB04425043FAA00570D27 /* Source.swift */,
+				5F2FB04625043FC600570D27 /* Category.swift */,
+				5F2FB04A2504466800570D27 /* FilterType.swift */,
+				5F2FB04225043F9500570D27 /* AllSorcesServerResponse.swift */,
+				5F2FB04025043F5000570D27 /* ArticlesServerResponse.swift */,
+				5F2FB04825043FD700570D27 /* Country.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -259,11 +277,17 @@
 				5F0AB584250191980086208E /* DropDownPickerTableViewCell.swift in Sources */,
 				5F0AB579250181820086208E /* UIViewController+Extensions.swift in Sources */,
 				5F2FB03D2503B60100570D27 /* Settings.swift in Sources */,
+				5F2FB04525043FAA00570D27 /* Source.swift in Sources */,
 				5F0AB554250163A70086208E /* AppDelegate.swift in Sources */,
+				5F2FB04925043FD700570D27 /* Country.swift in Sources */,
 				5F0AB589250191980086208E /* TextFieldAndButtonTableViewCell.swift in Sources */,
+				5F2FB04725043FC600570D27 /* Category.swift in Sources */,
 				5F0AB56D25016FCC0086208E /* ArticleTableViewCell.swift in Sources */,
+				5F2FB04125043F5000570D27 /* ArticlesServerResponse.swift in Sources */,
+				5F2FB04325043F9500570D27 /* AllSorcesServerResponse.swift in Sources */,
 				5F0AB5682501640D0086208E /* NetworkingAPI.swift in Sources */,
 				5F0AB556250163A70086208E /* SceneDelegate.swift in Sources */,
+				5F2FB04B2504466800570D27 /* FilterType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
