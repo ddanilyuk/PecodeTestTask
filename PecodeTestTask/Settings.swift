@@ -46,4 +46,5 @@ public class Settings {
             userDefaults.set(selectedSourcesData, forKey: "allSources")
         }
     }
+    
 }

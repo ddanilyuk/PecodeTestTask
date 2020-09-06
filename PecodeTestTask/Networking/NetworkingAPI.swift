@@ -18,13 +18,15 @@ struct Filter: Codable {
 class NetworkingAPI {
 
     static let apiKEY = "fc72af4dbdfe47c8b80ceca8463fd809"
-//    static let apiKEY = "411b721aa2e94b808962e7ab284f1ee4"
+    
+    // Old key
+    // static let apiKEY = "411b721aa2e94b808962e7ab284f1ee4"
     
     typealias DataComplition = (Data) -> ()
     
     func getNews(querie: String?, filter: Filter, page: Int, complition: @escaping DataComplition) {
         
-            var queryItems: [URLQueryItem] = [
+        var queryItems: [URLQueryItem] = [
             URLQueryItem(name: "apiKey", value: NetworkingAPI.apiKEY),
             URLQueryItem(name: "page", value: "\(page)")
         ]
@@ -44,22 +46,18 @@ class NetworkingAPI {
         }
         
         if let sources = filter.sources {
-
             if !sources.isEmpty {
                 queryItems.append(
                     URLQueryItem(name: "sources", value: sources.map({$0.id}).reduce("", {part1, part2 in "\(part1 ?? ""),\(part2 ?? "")"}))
                 )
             }
-
         }
         
         guard var urlComponents = URLComponents(string: "https://newsapi.org/v2/top-headlines") else { return }
-        
         urlComponents.queryItems = queryItems
         
-        
         guard let url = urlComponents.url else { return }
-        print(url)
+        // print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
@@ -70,11 +68,10 @@ class NetworkingAPI {
             }
             
             if let data = data {
-                let str = String(decoding: data, as: UTF8.self)
-//                print(str)
+                // let debugStringData = String(decoding: data, as: UTF8.self)
+                // print(debugStringData)
                 complition(data)
             }
-            
         })
         dataTask.resume()
         
@@ -87,17 +84,15 @@ class NetworkingAPI {
         guard let url = URL(string: stringURL) else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        print(url)
+        // print(url)
         let dataTask = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if let error = error {
                 print(error.localizedDescription)
             }
             if let data = data {
-                let str = String(decoding: data, as: UTF8.self)
-                print(str)
-
-                let decoder = JSONDecoder()
-                let sourcesResonse = try? decoder.decode(AllSorcesServerResponse.self, from: data)
+                // let debugStringData = String(decoding: data, as: UTF8.self)
+                // print(debugStringData)
+                let sourcesResonse = try? JSONDecoder().decode(AllSorcesServerResponse.self, from: data)
                 complition(sourcesResonse?.sources ?? [])
             }
         })

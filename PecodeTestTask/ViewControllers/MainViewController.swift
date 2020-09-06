@@ -16,25 +16,25 @@ class MainViewController: UIViewController {
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
-    
+    var tableViewRefreshControll: UIRefreshControl!
+
+    let api = NetworkingAPI()
+
     var news: [Article] = []
     
-    let api = NetworkingAPI()
-    
-    /// Searching
+    // Searching
     var isSearching = false
     var newsInSearch: [Article] = []
     let search = UISearchController(searchResultsController: nil)
-    
+    //
     
     var settings = Settings()
     
-    
+    // Pagination
     var currentPage: Int = 1
     var articlesInPage: Int = 20
+    //
     
-    ///
-    var tableViewRefreshControll: UIRefreshControl!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +61,6 @@ class MainViewController: UIViewController {
     }
     
     private func startLoading(with text: String = "Loading...") {
-
         loadingView.isHidden = false
         tableView.isHidden = true
         loadingActivityIndicator.startAndShow()
@@ -76,7 +75,6 @@ class MainViewController: UIViewController {
             self.loadingLabel.isHidden = true
             self.tableView.isHidden = false
         }
-        
     }
     
     private func setupFirstLaunch() {
@@ -92,9 +90,7 @@ class MainViewController: UIViewController {
     
     private func setupTableView() {
         tableView.refreshControl = tableViewRefreshControll
-
         tableView.register(UINib(nibName: ArticleTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: ArticleTableViewCell.identifier)
-
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -209,9 +205,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard !isSearching else { return }
         /// Functions to load more news when user reached end
         if news.count == indexPath.row + 1 {
-            
             print("LOG: Downloading new news!")
-            
             api.getNews(querie: nil, filter: settings.selectedFilter, page: currentPage + 1) { [weak self] data  in
                 let serverResponse = try? JSONDecoder().decode(ArticlesServerResponse.self, from: data)
                 if let serverResponse = serverResponse {
@@ -221,8 +215,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                         this.stopLoading()
                         print("LOG: New news downloaded!")
                         
-                        print((this.news.count / this.articlesInPage))
-                        
                         if (this.news.count / this.articlesInPage) != this.currentPage + 1 {
                             print("LOG: New news APPLY!!!")
                             this.downloadAndCacheImagesForNewNews(atricles: serverResponse.articles)
@@ -230,7 +222,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                             this.currentPage += 1
                             this.tableView.reloadData()
                         }
-                        
                     }
                 }
             }
@@ -287,7 +278,7 @@ extension MainViewController: FilterViewControllerDelegate {
     
     func filterParametersChanged(filter: Filter) {
         settings.selectedFilter = filter
-        self.startLoading(with: "Loadin news...")
+        self.startLoading(with: "Loading news...")
         loadFirstPage()
     }
     

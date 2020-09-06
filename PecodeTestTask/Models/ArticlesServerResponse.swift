@@ -11,7 +11,7 @@ import Foundation
 struct ArticlesServerResponse: Codable {
     var status: String
     
-    /// Server show invalid total results.
+    // Sometimes server show invalid total results.
     var totalResults: Int
     var articles: [Article]
 }

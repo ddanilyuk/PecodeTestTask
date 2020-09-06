@@ -18,7 +18,10 @@ class FilterViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentControl: UISegmentedControl!
     
+    /// True if dropdown list for country opened
     var isCountryListOpen: Bool = false
+    
+    /// True if dropdown list for category opened
     var isCategoryListOpen: Bool = false
     
     var selectedRowInPickers: [Int: Int] = [ : ]
@@ -27,7 +30,6 @@ class FilterViewController: UIViewController {
 
     var settings = Settings()
     
-//    var filter = Filter()
     
     var filterType: FilterType = .countryAndCategory
     
@@ -40,15 +42,13 @@ class FilterViewController: UIViewController {
         super.viewDidLoad()
         setupTableView()
         setupSegmentControl()
-        
-//        filter = settings.selectedFilter
+
         selectedCountry = settings.selectedFilter.country
         selectedCategory = settings.selectedFilter.category
         selectedSources = settings.selectedFilter.sources ?? []
         
         selectedRowInPickers[0] = Int(Country.allCases.firstIndex { $0 == selectedCountry } ?? 0)
         selectedRowInPickers[1] = Int(Category.allCases.firstIndex { $0 == selectedCategory } ?? 0)
-//        selectedRowInPickers2[0] = Int(settings.allSources.firstIndex { $0 == filter.source } ?? 0)
         
         if selectedCategory == nil && selectedCountry == nil {
             segmentControl.selectedSegmentIndex = 1
@@ -64,7 +64,6 @@ class FilterViewController: UIViewController {
         tableView.register(UINib(nibName: DropDownPickerTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: DropDownPickerTableViewCell.identifier)
         tableView.register(UINib(nibName: SourceTableViewCell.identifier, bundle: Bundle.main), forCellReuseIdentifier: SourceTableViewCell.identifier)
 
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -94,11 +93,9 @@ class FilterViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    
     @IBAction func didPressCancel(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     @IBAction func segmentControlDidChange(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -130,13 +127,12 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
         if filterType == .countryAndCategory {
             if section == 0 {
                 return isCountryListOpen ? 2 : 1
-            } else if section == 1 {
+            } else {
                 return isCategoryListOpen ? 2 : 1
             }
         } else {
             return settings.allSources.count
         }
-        return 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -199,6 +195,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
                 assertionFailure("Cell not created")
                 return UITableViewCell()
             }
+            
             dropDownCell.fatherIndexPath = IndexPath(row: 0, section: indexPath.section)
 
             var dataArray: [String] = []
@@ -235,8 +232,6 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
             cell.isSourceSelected = !isInSelectedSources
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        
-       
     }
     
 }
@@ -256,6 +251,7 @@ extension FilterViewController: TextFieldAndButtonTableViewCellDelegate {
             switcherValue = isCategoryListOpen
         }
         
+        // Deleting or adding dropdown cell to table view
         if switcherValue {
             tableView.insertRows(at: [IndexPath(row: 1, section: indexPath.section)], with: .fade)
         } else {
@@ -267,6 +263,7 @@ extension FilterViewController: TextFieldAndButtonTableViewCellDelegate {
 
 extension FilterViewController: DropDownPickerTableViewCellDelegate {
     
+    // User changed value in dropdown menu
     func userChangedDropDownCellAt(fatherIndexPath: IndexPath, text: String, inPickerRow: Int) {
         guard let cell = tableView.cellForRow(at: fatherIndexPath) as? TextFieldAndButtonTableViewCell else {
             assertionFailure("Invalid indexPath")

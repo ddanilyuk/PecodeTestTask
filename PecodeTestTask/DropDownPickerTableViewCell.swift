@@ -86,9 +86,6 @@ extension DropDownPickerTableViewCell: UIPickerViewDelegate, UIPickerViewDataSou
         let isRowSelected = selectedRow == row
 
         let textColor = isRowSelected ? UIColor.systemRed : UIColor.label
-
-
-        
         let attributtedString = NSAttributedString(string: dataArray[row], attributes: [
             NSAttributedString.Key.foregroundColor: textColor,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .regular)

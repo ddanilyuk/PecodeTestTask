@@ -34,14 +34,12 @@ class ArticleTableViewCell: UITableViewCell {
         self.articleImageActivityIndicator.startAnimating()
         
         if let drinkImageURL = articleImageURL {
-            /// If image already cached, use if!
+            /// If image already cached, use it!
             if let cachedImage = imageCache.object(forKey: drinkImageURL.absoluteString as NSString)  {
                 articleImageView.image = cachedImage
-                // print(self.drinkNameLabel.text, "using image from cache")
                 self.articleImageActivityIndicator.stopAndHide()
             } else {
                 /// If not, download in and cache
-                // print(self.drinkNameLabel.text, "downloading image")
                 downloadAndCacheImage()
             }
         }
@@ -71,10 +69,8 @@ class ArticleTableViewCell: UITableViewCell {
                     DispatchQueue.main.async { [weak self] in
                         self?.articleImageView.image = UIImage(named: "placeholder")
                         self?.articleImageActivityIndicator.stopAndHide()
-
                     }
                 }
-
             }
         }
     }
